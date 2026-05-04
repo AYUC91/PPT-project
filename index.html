@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT 部門週報 (自動同步版)</title>
     <style>
+        /* --- 新增：修正邊距把寬度撐破的問題 --- */
+        * {
+            box-sizing: border-box;
+        }
+
         /* 網頁深色背景設定 */
         body {
             margin: 0;
@@ -121,6 +126,7 @@
                 flex-direction: column;
                 justify-content: flex-start;
                 padding-top: 20px;
+                overflow-x: hidden; /* 新增：防止畫面左右亂跑 */
             }
 
             .header-container {
@@ -131,6 +137,7 @@
                 border-left: none;
                 border-right: none;
                 margin-bottom: 0;
+                padding: 15px; /* 縮小手機版內邊距 */
             }
 
             .report-selector {
@@ -149,6 +156,7 @@
                 flex-direction: column;
                 width: 90%;
                 margin-top: 20px;
+                margin-bottom: 40px; /* 新增：底部留白，避免被手機瀏覽器底下的工具列擋住 */
             }
 
             .action-btn {
