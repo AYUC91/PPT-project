@@ -191,13 +191,14 @@
             IT 部門週報系統
         </div>
         <select class="report-selector" id="report-selector" onchange="changeReport()">
-            <!-- ⬇️ 以後每週有新簡報，就複製下面這一行，改掉網址跟日期就好 ⬇️ -->
-            <option value="https://docs.google.com/presentation/d/e/2PACX-1vQ3NHNMHdaWbppZMF-T1Wi3z7z52iWtpLCJ1KWzvAHRpaVnlJ4f_HURqaaTETOillqbHRgQiTXc6Hay/pubembed?start=false&loop=false&delayms=3000">2026/05/04 週報 (最新)</option>
+            <!-- ⬇️ 以後每週有新簡報，請把發佈後取得的「新網址」貼到 value="裡面"，並修改顯示文字 ⬇️ -->
+            
+            <option value="https://docs.google.com/presentation/d/e/2PACX-1vQPGBZjerfDDv9BVRBtJbe-C3qUayd6ZOuXfElY86a-0Z0NqW3mYwdRh8yQw0M3MriKgx1Ug4nyKbMH/pubembed?start=false&loop=false&delayms=3000">2026/05/04 週報 (最新)</option>
             <option value="https://docs.google.com/presentation/d/e/2PACX-1vQ3NHNMHdaWbppZMF-T1Wi3z7z52iWtpLCJ1KWzvAHRpaVnlJ4f_HURqaaTETOillqbHRgQiTXc6Hay/pubembed?start=false&loop=false&delayms=3000">2026/04/24 週報</option>
             
-            <!-- 這是給你測試切換用的假選項（連結目前一樣） -->
-            <option value="https://docs.google.com/presentation/d/e/2PACX-1vQ3NHNMHdaWbppZMF-T1Wi3z7z52iWtpLCJ1KWzvAHRpaVnlJ4f_HURqaaTETOillqbHRgQiTXc6Hay/pubembed?start=false&loop=false&delayms=3000">2026/04/17 週報</option>
-            <option value="https://docs.google.com/presentation/d/e/2PACX-1vQ3NHNMHdaWbppZMF-T1Wi3z7z52iWtpLCJ1KWzvAHRpaVnlJ4f_HURqaaTETOillqbHRgQiTXc6Hay/pubembed?start=false&loop=false&delayms=3000">2026/04/10 週報</option>
+            <!-- 歷史週報 -->
+            <option value="請在這裡貼上04/17簡報的發佈網址">2026/04/17 週報</option>
+            <option value="請在這裡貼上04/10簡報的發佈網址">2026/04/10 週報</option>
         </select>
     </div>
 
@@ -223,12 +224,27 @@
     </div>
 
     <script>
-        // 切換不同週報的功能
+        // 切換不同週報的功能：一旦選單改變，就會自動抓取 value 的網址並載入 iframe
         function changeReport() {
             const selector = document.getElementById("report-selector");
             const iframe = document.getElementById("google-slide");
-            iframe.src = selector.value;
+            
+            // 如果網址還沒填寫，給個小提示
+            if (selector.value.includes("請在這裡貼上")) {
+                alert("這個週期的簡報網址還沒設定喔！請先至 GitHub 編輯程式碼加入正確連結。");
+            } else {
+                iframe.src = selector.value;
+            }
         }
+
+        // 頁面載入時，自動切換到選單中第一個選項的網址
+        window.onload = function() {
+            const selector = document.getElementById("report-selector");
+            const iframe = document.getElementById("google-slide");
+            if (!selector.value.includes("請在這裡貼上")) {
+                iframe.src = selector.value;
+            }
+        };
 
         // 全螢幕功能
         function openFullscreen() {
@@ -246,6 +262,10 @@
         function openNewTab() {
             const iframe = document.getElementById("google-slide");
             const rawUrl = iframe.src;
+            if (rawUrl.includes("請在這裡貼上")) {
+                alert("網址尚未設定");
+                return;
+            }
             // 轉換連結格式以獲得最佳的全螢幕獨立視窗體驗
             const cleanUrl = rawUrl.replace('/pubembed', '/pub');
             window.open(cleanUrl, '_blank');
